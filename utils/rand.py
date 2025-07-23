@@ -1,7 +1,6 @@
 import random
 import string
-import sys
-
+import string
 
 def randint_n(n):
 
@@ -17,12 +16,7 @@ def randint_n(n):
     range_end = (10**n)-1
     return random.randint(range_start, range_end)
 
-if sys.version_info.major > 2 :
-    letters = string.ascii_letters
-else :
-    letters = string.letters
-
-def randstr_n(n, chars=letters + string.digits):
+def randstr_n(n, chars=string.ascii_letters + string.digits):
     return ''.join(
         random.choice(chars) for _ in range(n)
     )

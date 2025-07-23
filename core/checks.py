@@ -21,14 +21,9 @@ from core.channel import Channel
 from utils.loggers import log
 from core.clis import Shell, MultilineShell
 from core.tcpserver import TcpServer
-import time
 import telnetlib
-import sys
 
-if sys.version_info.major > 2 :
-    import urllib.parse as urlparse
-else :
-    import urlparse
+import urllib.parse as urlparse
 
 import socket
 
@@ -117,12 +112,7 @@ def _print_injection_summary(channel):
 def detect_template_injection(channel, plugins = plugins):
 
     # Loop manually the channel.injs modifying channel's inj_idx
-    if sys.version_info.major >= 2 :
-        wrappedRange = range
-    else :
-        wrappedRange = xrange
-
-    for i in wrappedRange(len(channel.injs)):
+    for i in range(len(channel.injs)):
 
         log.info("Testing if %s parameter '%s' is injectable" % (
             channel.injs[channel.inj_idx]['field'],

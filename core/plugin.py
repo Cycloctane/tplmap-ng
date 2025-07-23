@@ -1,15 +1,11 @@
-import struct
-import sys
-
 from utils.strings import chunkit, md5
 from utils import rand
 from utils.loggers import log
-import collections
+from collections import deque
+from collections.abc import Mapping
 import re
 import itertools
 import base64
-import datetime
-import collections
 import threading
 import time
 import utils.config
@@ -18,8 +14,8 @@ def _recursive_update(d, u):
     # Update value of a nested dictionary of varying depth
 
     for k, v in u.items():
-        if isinstance(d, collections.Mapping):
-            if isinstance(v, collections.Mapping):
+        if isinstance(d, Mapping):
+            if isinstance(v, Mapping):
                 r = _recursive_update(d.get(k, {}), v)
                 d[k] = r
             else:
@@ -30,17 +26,7 @@ def _recursive_update(d, u):
     return d
 
 def compatible_url_safe_base64_encode(input):
-    code_b64 = input
-
-    if sys.version_info.major >= 2:
-        code_b64 = code_b64.encode(encoding='UTF-8')
-
-    code_b64 = base64.urlsafe_b64encode(code_b64)
-
-    if sys.version_info.major >= 2:
-        code_b64 = code_b64.decode(encoding='UTF-8')
-
-    return code_b64
+    return base64.urlsafe_b64encode(input.encode()).decode()
 
 class Plugin(object):
 
@@ -56,7 +42,7 @@ class Plugin(object):
         # tune the average response time for blind values.
 
         # Estimate 0.5s for a safe start.
-        self.render_req_tm = collections.deque([ 0.5 ], maxlen=5)
+        self.render_req_tm = deque([ 0.5 ], maxlen=5)
 
         # The delay fortime-based blind injection. This will be added 
         # to the average response time for render values.
